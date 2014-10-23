@@ -7,8 +7,6 @@ package com.korisnamedia.musicbox.ui {
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 
-import org.osmf.elements.compositeClasses.TraitLoaderEvent;
-
 public class TransportControls extends Sprite {
 
     private var playButton:PlayButton;
