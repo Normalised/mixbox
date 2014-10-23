@@ -1,0 +1,6 @@
+# Build and Release Folders
+out/
+
+# Other files and folders
+.settings/
+wavs/
