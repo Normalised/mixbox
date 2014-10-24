@@ -15,7 +15,6 @@ import flash.events.MouseEvent;
 public class BoxOfTracks extends Sprite {
 
     private var meterContainer:Sprite;
-    private var trackButtons:Vector.<Sprite>;
     public var meters:Vector.<CircleMeter>;
 
     public function BoxOfTracks() {
@@ -25,7 +24,6 @@ public class BoxOfTracks extends Sprite {
         meterContainer.x = 30;
         meterContainer.y = 30;
         meters = new Vector.<CircleMeter>();
-        trackButtons = new Vector.<Sprite>();
     }
 
     public function addTrack():void {
@@ -33,16 +31,11 @@ public class BoxOfTracks extends Sprite {
         meterContainer.addChild(meter);
         meter.x = meters.length * 60;
         meters.push(meter);
-        var miniButton:MiniButton = new MiniButton();
-        meterContainer.addChild(miniButton);
-        miniButton.x = meter.x - (miniButton.width * 0.5);
-        miniButton.y = 30;
-        miniButton.addEventListener(MouseEvent.CLICK, toggleTrack);
-        trackButtons.push(miniButton);
+        meterContainer.addEventListener(MouseEvent.CLICK, toggleTrack);
     }
 
     private function toggleTrack(event:MouseEvent):void {
-        var trackID:int = trackButtons.indexOf(event.target);
+        var trackID:int = meters.indexOf(event.target);
         dispatchEvent(new IndexEvent(trackID));
     }
 }

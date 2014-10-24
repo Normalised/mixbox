@@ -13,7 +13,9 @@ public class CircleMeter extends Sprite {
 
         graphics.moveTo(0,0);
         graphics.lineStyle(1,0x777777);
+        graphics.beginFill(0xAAAAAA,0.5);
         graphics.drawCircle(0,0,25);
+        graphics.endFill();
 
         syncIndicator = new Sprite();
         syncIndicator.graphics.moveTo(0,0);
