@@ -6,17 +6,17 @@
 package com.korisnamedia.musicbox {
 import com.korisnamedia.IndexEvent;
 import com.korisnamedia.audio.AudioLoop;
+import com.korisnamedia.audio.MP3SampleLoader;
 import com.korisnamedia.audio.MixEngine;
+import com.korisnamedia.audio.SampleEvent;
 import com.korisnamedia.audio.Tempo;
 import com.korisnamedia.audio.sequence.Sequence;
 import com.korisnamedia.audio.sequence.SequenceEvent;
 import com.korisnamedia.musicbox.ui.BoxOfTracks;
-import com.korisnamedia.musicbox.ui.SequencerView;
 
 import flash.events.Event;
 
 import flash.events.EventDispatcher;
-import flash.utils.getTimer;
 
 public class MultiTrackBox extends EventDispatcher{
 
