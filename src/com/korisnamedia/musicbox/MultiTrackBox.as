@@ -105,8 +105,10 @@ public class MultiTrackBox extends EventDispatcher{
     }
 
     public function start():void {
-        recording = false;
-        startEngine();
+        if(!mixEngine.playing) {
+            recording = false;
+            startEngine();
+        }
     }
 
     private function startEngine():void {
