@@ -1,0 +1,146 @@
+{
+  "track:7": [
+    {
+      "state": false,
+      "time": 0
+    },
+    {
+      "state": true,
+      "time": 4
+    },
+    {
+      "state": false,
+      "time": 32
+    },
+    {
+      "state": true,
+      "time": 56
+    }
+  ],
+  "track:6": [
+    {
+      "state": false,
+      "time": 0
+    },
+    {
+      "state": true,
+      "time": 24
+    }
+  ],
+  "track:5": [
+    {
+      "state": false,
+      "time": 0
+    },
+    {
+      "state": true,
+      "time": 16
+    },
+    {
+      "state": false,
+      "time": 23
+    },
+    {
+      "state": true,
+      "time": 44
+    }
+  ],
+  "track:3": [
+    {
+      "state": false,
+      "time": 0
+    },
+    {
+      "state": true,
+      "time": 8
+    },
+    {
+      "state": false,
+      "time": 36
+    },
+    {
+      "state": true,
+      "time": 52
+    }
+  ],
+  "track:2": [
+    {
+      "state": false,
+      "time": 0
+    },
+    {
+      "state": true,
+      "time": 20
+    },
+    {
+      "state": false,
+      "time": 36
+    },
+    {
+      "state": true,
+      "time": 48
+    }
+  ],
+  "track:4": [
+    {
+      "state": false,
+      "time": 0
+    },
+    {
+      "state": true,
+      "time": 12
+    }
+  ],
+  "track:1": [
+    {
+      "state": true,
+      "time": 0
+    },
+    {
+      "state": false,
+      "time": 18
+    },
+    {
+      "state": true,
+      "time": 20
+    },
+    {
+      "state": false,
+      "time": 28
+    },
+    {
+      "state": true,
+      "time": 32
+    },
+    {
+      "state": false,
+      "time": 47
+    },
+    {
+      "state": true,
+      "time": 48
+    },
+    {
+      "state": false,
+      "time": 51
+    },
+    {
+      "state": true,
+      "time": 52
+    }
+  ],
+  "track:0": [
+    {
+      "state": true,
+      "time": 0
+    },
+    {
+      "state": false,
+      "time": 28
+    },
+    {
+      "state": true,
+      "time": 40
+    }
+  ]
+}

@@ -28,7 +28,7 @@ public class TransportControls extends Sprite {
         addChild(playButton);
         addChild(stopButton);
         addChild(recordButton);
-        addChild(playSequenceButton);
+//        addChild(playSequenceButton);
 
         addChild(position);
 
@@ -36,7 +36,7 @@ public class TransportControls extends Sprite {
         recordButton.x = 48;
         playSequenceButton.x = 80;
         playSequenceButton.center.visible = false;
-
+        playSequenceButton.alpha = 0.3;
         position.y = 24;
 
         playButton.addEventListener(MouseEvent.CLICK, playClicked);
@@ -46,6 +46,7 @@ public class TransportControls extends Sprite {
     }
 
     public function set sequenceAvailable(s:Boolean):void {
+        playSequenceButton.alpha = 1;
         playSequenceButton.center.visible = s;
     }
 
@@ -62,11 +63,24 @@ public class TransportControls extends Sprite {
     }
 
     private function playSequenceClicked(event:MouseEvent):void {
+        trace("Play sequence clicked");
         dispatchEvent(new TransportEvent(TransportEvent.PLAY_SEQUENCE));
     }
 
     public function set time(pos:Number):void {
         position.position.text = pos.toString();
+    }
+
+    public function set playState(playState:Boolean):void {
+        if(playState) {
+//            recordButton.alpha = 0.3;
+            playButton.alpha = 0.3;
+            playSequenceButton.alpha = 0.3;
+        } else {
+            recordButton.alpha = 1;
+            playButton.alpha = 1;
+            playSequenceButton.alpha = 1;
+        }
     }
 }
 }

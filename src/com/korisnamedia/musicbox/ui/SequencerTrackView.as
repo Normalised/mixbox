@@ -10,14 +10,17 @@ import com.korisnamedia.audio.sequence.SequenceTrack;
 import flash.display.Sprite;
 import flash.events.Event;
 
+import org.as3collections.IListMapIterator;
+
 public class SequencerTrackView extends Sprite {
 
     private var _sequencerTrack:SequenceTrack;
 
-    private var timeScale:Number = 20;
-    private var size:Number = 9;
+    public var timeScale:Number = 10;
+    public var size:Number = 9;
 
-    public function SequencerTrackView() {
+    public function SequencerTrackView(size:Number) {
+        this.size = size;
     }
 
     public function get sequencerTrack():SequenceTrack {
@@ -37,10 +40,11 @@ public class SequencerTrackView extends Sprite {
     private function render():void {
 
         graphics.clear();
-        graphics.lineStyle(1,0);
+        graphics.lineStyle(0,0x999999);
         graphics.moveTo(0,0);
-        for (var i:int = 0; i < _sequencerTrack.events.length; i++) {
-            var event:SequenceEvent = _sequencerTrack.events[i];
+        var events:IListMapIterator = _sequencerTrack.events.listMapIterator();
+        while(events.hasNext()) {
+            var event:SequenceEvent = events.next();
             var t:Number = event.time;
             if(event.data.state) {
                 graphics.beginFill(0x00FF00);

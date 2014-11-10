@@ -8,74 +8,74 @@ import com.korisnamedia.audio.AudioLoop;
 import com.korisnamedia.audio.MicRecorder;
 import com.korisnamedia.audio.MixEngine;
 import com.korisnamedia.audio.Oscilloscope;
+import com.korisnamedia.audio.Tempo;
 import com.korisnamedia.ui.MiniButton;
 
 import flash.display.Sprite;
 
 import flash.events.Event;
-import flash.events.MouseEvent;
 
 public class MicTrack extends Sprite {
 
-    private var micRecorder:MicRecorder;
-    public var audioData:AudioLoop;
-    private var startRecordingButton:MiniButton;
+    public var micRecorder:MicRecorder;
     private var scope:Oscilloscope;
-    private var _recordTime:int;
     private var mixEngine:MixEngine;
-    private var _loopLength:int;
     private var renderer:WaveformRenderer;
+    private var loop:AudioLoop;
 
-    public function MicTrack(mixEngine:MixEngine) {
+    public function MicTrack(mixEngine:MixEngine, tempo:Tempo, numBars:int) {
 
         this.mixEngine = mixEngine;
 
-        scope = new Oscilloscope(800,200);
+        scope = new Oscilloscope(600,80);
         addChild(scope);
-        scope.y = 400;
+        scope.y = 150;
 
         micRecorder = new MicRecorder();
-        micRecorder.scope = scope;
         micRecorder.addEventListener(Event.COMPLETE, recordingComplete);
-        startRecordingButton = new MiniButton();
-        startRecordingButton.addEventListener(MouseEvent.CLICK, startRecording);
-        startRecordingButton.x = 10;
-        startRecordingButton.y = 125;
-        addChild(startRecordingButton);
 
-        renderer = new WaveformRenderer();
-        renderer.y = 250;
+        loop = new AudioLoop(tempo);
+        loop.empty(4);
+        micRecorder.audioBuffer = loop;
+
+        renderer = new WaveformRenderer(600, 80);
+        renderer.sample = loop;
+
         addChild(renderer);
-
-        audioData = new AudioLoop();
         micRecorder.enable();
+
+        renderer.endTime = tempo.samplesPerBar * numBars;
+
+        addEventListener(Event.ENTER_FRAME, updateDisplay);
     }
 
-    public function set loopLength(time:int):void {
-        _loopLength = time;
-        _recordTime = time + mixEngine.latencyInSamples;
+    private function updateDisplay(event:Event):void {
+        scope.render(loop, micRecorder.writePos, 4096);
     }
 
-    private function startRecording(event:MouseEvent):void {
-        trace("Start recording");
-        micRecorder.recordTimeInSamples = _recordTime;
-        micRecorder.record();
+    public function startRecording(timeToSync:int):void {
+        if(!micRecorder.recording) {
+            trace("Start recording " + timeToSync);
+            micRecorder.record(timeToSync);
+        } else {
+            trace("Already recording");
+        }
+    }
+
+    public function stopRecording():void {
+        if(micRecorder.recording) {
+            trace("Stop Recording");
+            micRecorder.stop();
+        }
     }
 
     private function recordingComplete(event:Event):void {
         trace("Recording complete");
-        // Copy mic data to mic track
-        //(mixEngine.latencyInSamples * 2)
-        var offset:int = 0;
-        if(micRecorder.sampleData.length > _loopLength) {
-            offset = micRecorder.sampleData.length - _loopLength;
-            trace("Record Offset : " + offset);
-        }
-        audioData.copy(micRecorder.sampleData, null, offset);
-        audioData.bars = 4;
-        renderer.sample = audioData;
         renderer.render();
     }
 
+    public function get recording():Boolean {
+        return micRecorder.recording;
+    }
 }
 }

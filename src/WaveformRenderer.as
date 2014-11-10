@@ -22,9 +22,14 @@ public class WaveformRenderer extends Sprite {
     private var loopEndMarker:Sprite;
     private var loopStartMarker:Sprite;
     private var _sample:AudioLoop;
+    private var _endTime:int;
+    private var _width:Number;
+    private var _height:Number;
 
-    public function WaveformRenderer() {
+    public function WaveformRenderer(w:Number, h:Number) {
 
+        _width = w;
+        _height = h;
         waveformLeft = new Sprite();
         waveformRight = new Sprite();
 
@@ -152,6 +157,13 @@ public class WaveformRenderer extends Sprite {
 
     public function showCursor(position:Number):void {
         cursor.x = position * totalWidth;
+    }
+
+    public function set endTime(endTime:int):void {
+        _endTime = endTime;
+        resolution = (endTime / _width) * 2;
+        loopEndMarker.x = endTime / resolution;
+        trace("Waveform resolution : " + resolution + " : " + _width + " : " + endTime);
     }
 }
 }
