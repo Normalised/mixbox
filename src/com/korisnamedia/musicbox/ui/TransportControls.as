@@ -7,6 +7,10 @@ package com.korisnamedia.musicbox.ui {
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 
+import org.as3commons.logging.api.ILogger;
+
+import org.as3commons.logging.api.getLogger;
+
 public class TransportControls extends Sprite {
 
     private var playButton:PlayButton;
@@ -16,6 +20,7 @@ public class TransportControls extends Sprite {
 
     private var position:TransportPosition;
 
+    private static const log:ILogger = getLogger(TransportControls);
     public function TransportControls() {
         playButton = new PlayButton();
         stopButton = new StopButton();
@@ -32,12 +37,12 @@ public class TransportControls extends Sprite {
 
         addChild(position);
 
-        stopButton.x = 24;
-        recordButton.x = 48;
+        stopButton.x = playButton.x + playButton.width + 4;
+        recordButton.x = stopButton.x + stopButton.width + 4;
         playSequenceButton.x = 80;
         playSequenceButton.center.visible = false;
         playSequenceButton.alpha = 0.3;
-        position.y = 24;
+        position.x = -128;
 
         playButton.addEventListener(MouseEvent.CLICK, playClicked);
         playSequenceButton.addEventListener(MouseEvent.CLICK, playSequenceClicked);
@@ -63,7 +68,7 @@ public class TransportControls extends Sprite {
     }
 
     private function playSequenceClicked(event:MouseEvent):void {
-        trace("Play sequence clicked");
+        log.debug("Play sequence clicked");
         dispatchEvent(new TransportEvent(TransportEvent.PLAY_SEQUENCE));
     }
 

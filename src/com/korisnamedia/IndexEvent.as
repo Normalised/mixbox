@@ -4,7 +4,7 @@
  * Time: 11:01 AM
  */
 package com.korisnamedia {
-import flash.events.Event;
+import starling.events.Event;
 
 public class IndexEvent extends Event {
     public static const TYPE:String = "indexEvent";
@@ -14,6 +14,11 @@ public class IndexEvent extends Event {
     public function IndexEvent(id:Number) {
         super(TYPE);
         index = id;
+    }
+
+    public function clone():Event {
+        var ie:IndexEvent = new IndexEvent(index);
+        return ie;
     }
 }
 }

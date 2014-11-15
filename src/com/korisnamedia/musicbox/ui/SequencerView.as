@@ -76,7 +76,6 @@ public class SequencerView extends Sprite {
     }
 
     private function createTrackUI(st:SequenceTrack):void {
-        trace("Create trackUI");
         var trackUI:SequencerTrackView = new SequencerTrackView(trackHeight);
         trackUI.timeScale = timescale;
         trackUI.sequencerTrack = st;

@@ -19,8 +19,8 @@ public class BoxOfTracks extends Sprite {
 
     private var meterContainer:Sprite;
     public var meters:Vector.<CircleMeter>;
-    private var countIn:CountIn;
     private var mixEngine:MixEngine;
+    private var countIn:CountIn;
     public var countInStartBeat:Number;
     public var waitForCountIn:Boolean = false;
     private var playingMetronome:Boolean = false;
@@ -96,19 +96,6 @@ public class BoxOfTracks extends Sprite {
     private function playMetronome():void {
         playingMetronome = true;
         metroSound.play();
-    }
-
-    public function addTrack():void {
-        var meter:CircleMeter = new CircleMeter();
-        meterContainer.addChild(meter);
-        meter.x = meters.length * 60;
-        meters.push(meter);
-        meterContainer.addEventListener(MouseEvent.CLICK, toggleTrack);
-    }
-
-    private function toggleTrack(event:MouseEvent):void {
-        var trackID:int = meters.indexOf(event.target);
-        dispatchEvent(new IndexEvent(trackID));
     }
 
     public function startCountDown():void {
