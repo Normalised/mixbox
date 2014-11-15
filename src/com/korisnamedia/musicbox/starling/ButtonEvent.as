@@ -15,5 +15,10 @@ public class ButtonEvent extends Event {
         super(TYPE);
         this.button = button;
     }
+
+    public function clone():Event {
+        var be:ButtonEvent = new ButtonEvent(button);
+        return be;
+    }
 }
 }

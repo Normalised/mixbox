@@ -79,9 +79,9 @@ public class ButtonBar extends Sprite {
 
     public function doLayout(width:Number):void {
 
-        shareButton.x = (width - shareButton.width) / 2;
-        muteButton.x = shareButton.x - 150;
-        resetButton.x = shareButton.x + 150;
+        shareButton.x = recordButton.x = (width - shareButton.width) / 2;
+        muteButton.x = cancelRecordingButton.x = shareButton.x - 150;
+        resetButton.x = acceptRecordingButton.x = shareButton.x + 150;
     }
 
     private function buttonTouched(event:TouchEvent):void {
@@ -91,6 +91,27 @@ public class ButtonBar extends Sprite {
         var firstTouch:Touch = touches[0];
         if(buttonEventMap[firstTouch.target]) {
             dispatchEvent(new ButtonEvent(buttonEventMap[firstTouch.target]));
+        }
+    }
+
+    public function showRecordingControls(hasRecording:Boolean):void {
+        recordingButtonContainer.visible = true;
+        basicButtonContainer.visible = false;
+        if(hasRecording) {
+
+        }
+    }
+
+    public function showMainControls():void {
+        recordingButtonContainer.visible = false;
+        basicButtonContainer.visible = true;
+    }
+
+    public function set recording(recording:Boolean):void {
+        if(recording) {
+            recordButton.currentFrame = 2;
+        } else {
+            recordButton.currentFrame = 1;
         }
     }
 }

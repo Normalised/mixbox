@@ -44,6 +44,8 @@ use namespace LOGGER_FACTORY;
 [SWF(width='1000', height='600', frameRate='25')]
 public class MixBox extends Sprite {
 
+    public static const DEBUG:Boolean = true;
+
     private var multiTrackBox:MultiTrackBox;
 
     private var timer:Timer;
@@ -82,8 +84,6 @@ public class MixBox extends Sprite {
         _starling = new Starling(MixBoxUI, stage);
         _starling.addEventListener("rootCreated", rootCreated);
         _starling.start();
-//        transport = new TransportControls();
-//        addChild(transport);
 
 //        sequencerView = new SequencerView();
 ////        addChild(sequencerView);
@@ -126,17 +126,6 @@ public class MixBox extends Sprite {
 
     private function doLayout():void {
 
-//        transport.x = (stage.stageWidth / 2) - (transport.width / 2);
-//        transport.y = stage.stageHeight - transport.height - 4;
-//
-//        progressMeter.x = (stage.stageWidth / 2) - 50;
-//        progressMeter.y = (stage.stageHeight / 2) - 5;
-//
-//        saveButton.x = transport.x + transport.width + 10;
-//        saveButton.y = transport.y;
-//        loadButton.x = saveButton.x + saveButton.width + 4;
-//        loadButton.y = transport.y;
-
         engineInfo.x = (stage.stageWidth / 2) - (engineInfo.width / 2);
         engineInfo.y = stage.stageHeight - 200;
 
@@ -150,13 +139,14 @@ public class MixBox extends Sprite {
         log.debug('Root Created');
         multiTrackBox = new MultiTrackBox(tempo, _starling.root as MixBoxUI);
 //        multiTrackBox.sequence.barCount = tempo.secondsToBars(120);
-//        multiTrackBox.transport = transport;
         multiTrackBox.addEventListener(Event.COMPLETE, allTracksLoaded);
         multiTrackBox.addEventListener(LoadProgressEvent.PROGRESS, loadProgress);
         multiTrackBox.loadMP3s(mp3s);
 
         addEventListener(Event.ENTER_FRAME, update);
-        addChild(multiTrackBox.micTrack);
+        if(DEBUG) {
+            addChild(multiTrackBox.micTrack);
+        }
     }
 
     private function sequenceLoaded(event:JsonLoadEvent):void {

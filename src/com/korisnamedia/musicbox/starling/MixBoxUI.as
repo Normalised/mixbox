@@ -8,16 +8,12 @@ import com.korisnamedia.IndexEvent;
 import com.korisnamedia.audio.AudioLoop;
 import com.korisnamedia.audio.MixEngine;
 
-import flash.events.MouseEvent;
-
 import org.as3commons.logging.api.ILogger;
 import org.as3commons.logging.api.getLogger;
 
 import starling.display.MovieClip;
-
 import starling.display.Sprite;
 import starling.events.Event;
-import starling.text.TextField;
 import starling.textures.Texture;
 import starling.textures.TextureAtlas;
 
@@ -79,6 +75,11 @@ public class MixBoxUI extends Sprite {
 
     private function buttonTouched(event:ButtonEvent):void {
         log.debug("Button Touched : " + event.button);
+        if(event.button == ButtonBar.ACCEPT) {
+            buttonBar.showMainControls();
+        }
+
+        dispatchEvent(event.clone());
     }
 
     private function frameUpdate(event:Event):void {
@@ -168,6 +169,14 @@ public class MixBoxUI extends Sprite {
 
     public function resetCharacters():void {
         robots.reset();
+    }
+
+    public function showRecordingControls(b:Boolean):void {
+        buttonBar.showRecordingControls(b);
+    }
+
+    public function set recording(recording:Boolean):void {
+        buttonBar.recording = recording;
     }
 }
 }

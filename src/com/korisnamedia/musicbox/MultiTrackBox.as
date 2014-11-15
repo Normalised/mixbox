@@ -17,6 +17,8 @@ import com.korisnamedia.audio.Tempo;
 import com.korisnamedia.audio.sequence.Sequence;
 import com.korisnamedia.audio.sequence.SequenceEvent;
 import com.korisnamedia.audio.sequence.SequencePlayer;
+import com.korisnamedia.musicbox.starling.ButtonBar;
+import com.korisnamedia.musicbox.starling.ButtonEvent;
 import com.korisnamedia.musicbox.starling.MixBoxUI;
 import com.korisnamedia.musicbox.ui.BoxOfTracks;
 import com.korisnamedia.musicbox.ui.TransportControls;
@@ -51,6 +53,8 @@ public class MultiTrackBox extends EventDispatcher{
     private static const log:ILogger = getLogger(MultiTrackBox);
     private var ui:MixBoxUI;
 
+    public static const MIC_TRACK_INDEX:int = 8;
+
     public function MultiTrackBox(tempo:Tempo, ui:MixBoxUI) {
 
         this.ui = ui;
@@ -61,7 +65,7 @@ public class MultiTrackBox extends EventDispatcher{
 
         ui.init(mixEngine);
         ui.addEventListener(IndexEvent.TYPE, toggleTrackHandler);
-
+        ui.addEventListener(ButtonEvent.TYPE, uiButtonClicked);
         _mp3SampleLoader = new MP3SampleLoader(tempo);
         _mp3SampleLoader.addEventListener(SampleEvent.READY, sampleLoaded);
         _mp3SampleLoader.addEventListener(Event.COMPLETE, allLoaded);
@@ -74,6 +78,17 @@ public class MultiTrackBox extends EventDispatcher{
 
         micTrack = new MicTrack(mixEngine, tempo, 4);
         micTrack.addEventListener(Event.COMPLETE, recordingComplete);
+    }
+
+    private function uiButtonClicked(event:ButtonEvent):void {
+        if(event.button == ButtonBar.RECORD) {
+            recordMic();
+        } else if(event.button == ButtonBar.MUTE) {
+            mixEngine.toggleMute();
+            if(mixEngine.muted) {
+                
+            }
+        }
     }
 
     private function sequenceChanged(event:Event):void {
@@ -107,7 +122,20 @@ public class MultiTrackBox extends EventDispatcher{
     private function toggleTrackHandler(event:IndexEvent):void {
         log.debug("Toggle track handler " + event.index);
         var index:int = event.index;
-        toggleTrack(index);
+        if(index == MIC_TRACK_INDEX) {
+            log.debug("Toggle Mic Track");
+            ui.showRecordingControls(micTrack.hasRecording());
+            // If there isn't a recording, show the recording buttons
+            if(!micTrack.hasRecording()) {
+
+            } else {
+                // If there is a recording but its not playing, then start it and show
+                // the recording controls
+                toggleTrack(index);
+            }
+        } else {
+            toggleTrack(index);
+        }
     }
 
     private function toggleTrack(index:int):void {
@@ -208,7 +236,7 @@ public class MultiTrackBox extends EventDispatcher{
         }
     }
 
-    public function recordMic(event:Event):void {
+    public function recordMic(event:Object = null):void {
 
         if(!micTrack.recording) {
             if(!mixEngine.playing) {
@@ -225,7 +253,9 @@ public class MultiTrackBox extends EventDispatcher{
             }
             micTrack.startRecording(timeToSync);
             recording = true;
+            ui.recording = true;
         } else {
+            ui.recording = false;
             stopWhenComplete = false;
             micTrack.stopRecording();
         }
