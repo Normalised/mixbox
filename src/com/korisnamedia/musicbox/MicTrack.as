@@ -14,6 +14,8 @@ import com.korisnamedia.ui.MiniButton;
 import flash.display.Sprite;
 
 import flash.events.Event;
+
+import org.as3commons.logging.api.ILogger;
 import org.as3commons.logging.api.getLogger;
 
 public class MicTrack extends Sprite {
@@ -25,7 +27,7 @@ public class MicTrack extends Sprite {
     private var loop:AudioLoop;
     private var recorded:Boolean = false;
 
-    private static const log = getLogger(MicTrack);
+    private static const log:ILogger = getLogger(MicTrack);
 
     public function MicTrack(mixEngine:MixEngine, tempo:Tempo, numBars:int) {
 

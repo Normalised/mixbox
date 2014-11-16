@@ -36,11 +36,9 @@ public class ButtonBar extends Sprite {
     public static const RECORD:String = "recordEvent";
 
     private var buttonEventMap:Object;
-    private static const border:int = 8;
 
     public function ButtonBar(controlsAtlas:TextureAtlas) {
 
-        // or do the same in one line:
         muteButton = new MovieClip(controlsAtlas.getTextures("MuteButton"));
         shareButton = new MovieClip(controlsAtlas.getTextures("ShareButton"));
         resetButton = new MovieClip(controlsAtlas.getTextures("ResetButton"));
@@ -79,6 +77,8 @@ public class ButtonBar extends Sprite {
 
     public function doLayout(width:Number):void {
 
+        shareButton.y = 2;
+        resetButton.y = 5;
         shareButton.x = recordButton.x = (width - shareButton.width) / 2;
         muteButton.x = cancelRecordingButton.x = shareButton.x - 150;
         resetButton.x = acceptRecordingButton.x = shareButton.x + 150;
@@ -107,12 +107,12 @@ public class ButtonBar extends Sprite {
         basicButtonContainer.visible = true;
     }
 
+    public function set muted(m:Boolean):void {
+        muteButton.currentFrame = m ? 1 : 0;
+    }
+
     public function set recording(recording:Boolean):void {
-        if(recording) {
-            recordButton.currentFrame = 2;
-        } else {
-            recordButton.currentFrame = 1;
-        }
+        recordButton.currentFrame = recording ? 1 : 0;
     }
 }
 }

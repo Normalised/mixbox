@@ -17,15 +17,16 @@ import com.korisnamedia.audio.Tempo;
 import com.korisnamedia.musicbox.MicTrack;
 import com.korisnamedia.musicbox.MultiTrackBox;
 import com.korisnamedia.musicbox.starling.MixBoxUI;
+import com.korisnamedia.musicbox.ui.NativeUI;
 import com.korisnamedia.musicbox.ui.SequencerView;
 import com.korisnamedia.musicbox.ui.TransportControls;
 import com.korisnamedia.ui.RemoteMixManager;
 
-import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
 import flash.events.Event;
 import flash.events.MouseEvent;
+import flash.geom.Rectangle;
 import flash.utils.Timer;
 
 import org.as3commons.logging.api.ILogger;
@@ -38,10 +39,11 @@ import org.as3commons.logging.setup.SimpleTargetSetup;
 import org.as3commons.logging.setup.target.TraceTarget;
 
 import starling.core.Starling;
+import starling.display.Sprite;
+import starling.events.ResizeEvent;
 
 use namespace LOGGER_FACTORY;
 
-[SWF(width='1000', height='600', frameRate='25')]
 public class MixBox extends Sprite {
 
     public static const DEBUG:Boolean = true;
@@ -55,98 +57,84 @@ public class MixBox extends Sprite {
     private var tempo:Tempo;
     private var playingSequence:Boolean = false;
 
-    private var progressMeter:Sprite;
-    private var saveButton:SaveButton;
-    private var loadButton:LoadButton;
     private var jsonLoader:JsonLoader;
-    private var engineInfo:EngineInfo;
-    private var bufferFillTimeLimit:Number;
     private var audioUploader:AudioUploader;
     private var audioLoader:AudioLoader;
     private var mixManager:RemoteMixManager;
 
     private var server:String = "http://localhost/MooMixPhp/";
     private var endPoints:Object = {saveAudio:"saveAudio.php",getAudio:"getAudio.php",saveMix:"saveMix.php", getMix:"getMix.php"};
-    private var _starling:Starling;
 
     private static const log:ILogger = getLogger(MixBox);
     private var mp3s:Array;
+    private var ui:MixBoxUI;
+
+    private var _starling:Starling;
+    private var nativeUI:NativeUI;
+
     public function MixBox() {
 
-        stage.scaleMode = StageScaleMode.NO_SCALE;
-        stage.align = StageAlign.TOP_LEFT;
-        LOGGER_FACTORY.setup = new SimpleTargetSetup( new TraceTarget() );
-        addEventListener(Event.ADDED_TO_STAGE, addedToStage);
-    }
-
-    private function addedToStage(event:Event = null):void {
-
-        _starling = new Starling(MixBoxUI, stage);
-        _starling.addEventListener("rootCreated", rootCreated);
-        _starling.start();
-
-//        sequencerView = new SequencerView();
-////        addChild(sequencerView);
-//        sequencerView.x = 10;
-//        sequencerView.y = 150;
-        mp3s = [];
-        for(var i:int = 0;i<8;i++) {
-            mp3s.push("../audio/MixBoxTestTrack 0" + (i + 1) + ".mp3");
-        }
+        log.debug("New MixBox");
 
         tempo = new Tempo(120);
-
-        progressMeter = new Sprite();
-        addChild(progressMeter);
-
-        saveButton = new SaveButton();
-        saveButton.addEventListener(MouseEvent.CLICK, save);
-        saveButton.useHandCursor = true;
-        saveButton.buttonMode = true;
-        addChild(saveButton);
-        loadButton = new LoadButton();
-        loadButton.addEventListener(MouseEvent.CLICK, load);
-        loadButton.useHandCursor = true;
-        loadButton.buttonMode = true;
-        addChild(loadButton);
-
-        engineInfo = new EngineInfo();
-        addChild(engineInfo);
-
-        bufferFillTimeLimit = (4096 * 1000) / 44100;
-        trace("BFTL : " + bufferFillTimeLimit);
+        mp3s = [];
+        for (var i:int = 0; i < 8; i++) {
+            mp3s.push("audio/MixBoxTestTrack0" + (i + 1) + ".mp3");
+        }
+        audioLoader = new AudioLoader(server + endPoints.getAudio);
+        mixManager = new RemoteMixManager(server, endPoints);
         jsonLoader = new JsonLoader();
         jsonLoader.addEventListener(JsonLoadEvent.DATA_LOADED, sequenceLoaded);
 
-        audioLoader = new AudioLoader(server + endPoints.getAudio);
-        mixManager = new RemoteMixManager(server, endPoints);
+        _starling = Starling.current;
+        addEventListener(Event.ADDED_TO_STAGE, addedToStage);
 
-        doLayout();
     }
 
-    private function doLayout():void {
+    private function addedToStage(event:Object):void {
+        log.debug("Added to stage");
 
-        engineInfo.x = (stage.stageWidth / 2) - (engineInfo.width / 2);
-        engineInfo.y = stage.stageHeight - 200;
+        stage.addEventListener(Event.RESIZE, onResize);
 
-        if(multiTrackBox) {
-            multiTrackBox.micTrack.x = 10;
-            multiTrackBox.micTrack.y = 180;
-        }
-    }
+        ui = new MixBoxUI();
+        addChild(ui);
 
-    private function rootCreated(event:Object):void {
-        log.debug('Root Created');
-        multiTrackBox = new MultiTrackBox(tempo, _starling.root as MixBoxUI);
+        multiTrackBox = new MultiTrackBox(tempo);
+        multiTrackBox.mixBoxUI = ui;
 //        multiTrackBox.sequence.barCount = tempo.secondsToBars(120);
         multiTrackBox.addEventListener(Event.COMPLETE, allTracksLoaded);
-        multiTrackBox.addEventListener(LoadProgressEvent.PROGRESS, loadProgress);
         multiTrackBox.loadMP3s(mp3s);
 
-        addEventListener(Event.ENTER_FRAME, update);
+//        nativeUI = new NativeUI(_starling.nativeOverlay);
+//        nativeUI.mixEngine = multiTrackBox.mixEngine;
+
         if(DEBUG) {
-            addChild(multiTrackBox.micTrack);
+//            nativeUI.addMicTrack(multiTrackBox.micTrack);
         }
+
+    }
+
+    private function onResize(event:Object):void {
+        if(AppConfig.useNativeScreen) {
+            log.debug("Resize : " + _starling.nativeStage.fullScreenWidth + ", " + _starling.nativeStage.fullScreenHeight);
+            updateDimensions(_starling.nativeStage.fullScreenWidth, _starling.nativeStage.fullScreenHeight);
+        } else {
+            log.debug("Size : " + stage.width + ", " + stage.height);
+            updateDimensions(_starling.nativeStage.stageWidth, _starling.nativeStage.stageHeight);
+        }
+
+    }
+
+    private function updateDimensions(width:int, height:int):void {
+        log.debug("Update Starling Viewport " + width + ", " + height);
+
+        var scale:Number = Starling.current.contentScaleFactor;
+        var viewPort:Rectangle = new Rectangle(0, 0, width, height);
+
+        Starling.current.viewPort = viewPort;
+        stage.stageWidth  = viewPort.width  / scale;
+        stage.stageHeight = viewPort.height / scale;
+        ui.doLayout(stage.stageWidth, stage.stageHeight);
     }
 
     private function sequenceLoaded(event:JsonLoadEvent):void {
@@ -155,29 +143,7 @@ public class MixBox extends Sprite {
 
     }
 
-    private function loadProgress(event:LoadProgressEvent):void {
-        progressMeter.graphics.clear();
-        progressMeter.graphics.moveTo(0,0);
-        progressMeter.graphics.lineStyle(1,0);
-        progressMeter.graphics.beginFill(0x888888);
-        progressMeter.graphics.drawRect(0,0,event.progress, 10);
-    }
-
-    private function update(event:Event):void {
-        var mixEngine:MixEngine = multiTrackBox.mixEngine;
-        var pos:Number = Math.floor(mixEngine.latencyAdjustSequencePosition * 100);
-//        transport.time = pos / 100;
-        engineInfo.latency.text = mixEngine.latency.toString();
-        engineInfo.mixTime.text = mixEngine.writeTime.toString();
-        engineInfo.writeTime.text = mixEngine.mixTime.toString();
-        engineInfo.loadMeter.scaleX = (mixEngine.mixTime + mixEngine.writeTime) / bufferFillTimeLimit;
-//        if(multiTrackBox.playingSequence || multiTrackBox.recording) {
-//            sequencerView.time = pos / 100;
-//        }
-    }
-
     private function allTracksLoaded(event:Event = null):void {
-        progressMeter.visible = false;
 //        sequencerView.sequence = multiTrackBox.sequence;
     }
 

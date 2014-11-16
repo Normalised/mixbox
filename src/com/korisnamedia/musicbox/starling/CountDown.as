@@ -19,7 +19,7 @@ public class CountDown extends Sprite {
     private static const log:ILogger = getLogger(CountDown);
     public function CountDown(atlas:TextureAtlas) {
 
-        countdown = new MovieClip(atlas.getTextures("countdown"), 5);
+        countdown = new MovieClip(atlas.getTextures("Countdown"), 5);
         addChild(countdown);
     }
 

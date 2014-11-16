@@ -8,12 +8,18 @@ import com.korisnamedia.IndexEvent;
 import com.korisnamedia.audio.AudioLoop;
 import com.korisnamedia.audio.MixEngine;
 
+import flash.geom.Rectangle;
+
 import org.as3commons.logging.api.ILogger;
 import org.as3commons.logging.api.getLogger;
 
+import starling.core.Starling;
+
 import starling.display.MovieClip;
+import starling.display.Quad;
 import starling.display.Sprite;
 import starling.events.Event;
+import starling.events.ResizeEvent;
 import starling.textures.Texture;
 import starling.textures.TextureAtlas;
 
@@ -36,41 +42,67 @@ public class MixBoxUI extends Sprite {
 
     private var controlsAtlas:TextureAtlas;
     private var buttonBar:ButtonBar;
+    private var divider:Quad;
+    private var countdownCover:Quad;
+    private var recordProgress:Quad;
 
     public function MixBoxUI() {
         var texture:Texture = Texture.fromBitmap(new ControlsTexture());
         var xml:XML = XML(new ControlsAtlasXml());
         controlsAtlas = new TextureAtlas(texture, xml);
+
+        addEventListener(Event.ADDED_TO_STAGE, addedToStage);
     }
 
-    public function init(mixEngine:MixEngine):void {
-
-        this.mixEngine = mixEngine;
-
+    private function addedToStage(event:Event):void {
+        log.debug("UI Added to stage : " + stage.stageWidth + ", " + stage.stageHeight);
         metroSound = new MooMetronome();
+
         robots = new AnimatedCharacters();
-        countDownAnim = new CountDown(controlsAtlas);
+        robots.addEventListener(IndexEvent.TYPE, robotClicked);
+
+        divider = new Quad(256,1,0x333333);
+
         buttonBar = new ButtonBar(controlsAtlas);
         buttonBar.addEventListener(ButtonEvent.TYPE, buttonTouched);
 
+        countDownAnim = new CountDown(controlsAtlas);
+        recordProgress = new Quad(256,5,0xFF0000);
+        countdownCover = new Quad(256,256,0x777777,true);
+        countdownCover.alpha = 0.5;
+
         addChild(robots);
-        addChild(countDownAnim);
         addChild(buttonBar);
+        addChild(divider);
+        addChild(recordProgress);
+        addChild(countdownCover);
+        addChild(countDownAnim);
 
-        robots.addEventListener(IndexEvent.TYPE, robotClicked);
-
+        recordProgress.visible = false;
         countDownAnim.visible = false;
-        addEventListener(Event.ENTER_FRAME, frameUpdate);
+        countdownCover.visible = false;
 
-        doLayout();
+        doLayout(stage.stageWidth, stage.stageHeight);
+        addEventListener(Event.ENTER_FRAME, frameUpdate);
     }
 
-    public function doLayout():void {
-        buttonBar.y = stage.stageHeight - 60;
-        buttonBar.doLayout(stage.stageWidth);
-        robots.x = (stage.stageWidth - robots.width) / 2;
+    public function init(mixEngine:MixEngine):void {
+        this.mixEngine = mixEngine;
+    }
+
+    public function doLayout(w:int,h:int):void {
+        log.debug("Do Layout " + w + ", " + h);
+        buttonBar.y = h - 60;
+        buttonBar.doLayout(w);
+        robots.x = (w - robots.width) / 2;
         robots.y = 10;
-        countDownAnim.x = (stage.stageWidth - countDownAnim.width) / 2;
+        countDownAnim.x = (w - countDownAnim.width) / 2;
+        countDownAnim.y = (buttonBar.y - countDownAnim.height) / 2;
+        divider.y = buttonBar.y - 4;
+        divider.width = w;
+        countdownCover.width = w;
+        countdownCover.height = divider.y;
+        recordProgress.y = divider.y - 5;
     }
 
     private function buttonTouched(event:ButtonEvent):void {
@@ -148,19 +180,20 @@ public class MixBoxUI extends Sprite {
             countInStartBeat = (nextBoundary + 1) * 4;
         }
         countDownAnim.show(4);
+        countdownCover.visible = true;
         countDownAnim.visible = true;
     }
 
     public function endCountDown():void {
         playingMetronome = false;
         countDownAnim.visible = false;
+        countdownCover.visible = false;
     }
 
     public function addTrack():void {
         var robot:MovieClip = robots.addCharacter();
         robot.addEventListener(IndexEvent.TYPE, robotClicked);
         robots.x = (stage.stageWidth - robots.width) / 2;
-        countDownAnim.y = robots.y + robots.height + 10;
     }
 
     private function robotClicked(event:IndexEvent):void {
@@ -173,6 +206,10 @@ public class MixBoxUI extends Sprite {
 
     public function showRecordingControls(b:Boolean):void {
         buttonBar.showRecordingControls(b);
+    }
+
+    public function set muted(m:Boolean):void {
+        buttonBar.muted = m;
     }
 
     public function set recording(recording:Boolean):void {

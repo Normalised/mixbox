@@ -10,20 +10,13 @@ import com.korisnamedia.audio.AudioLoopEvent;
 import com.korisnamedia.audio.BooleanEvent;
 import com.korisnamedia.audio.LoadProgressEvent;
 import com.korisnamedia.audio.MP3SampleLoader;
-import com.korisnamedia.audio.MicRecorder;
 import com.korisnamedia.audio.MixEngine;
 import com.korisnamedia.audio.SampleEvent;
 import com.korisnamedia.audio.Tempo;
-import com.korisnamedia.audio.sequence.Sequence;
-import com.korisnamedia.audio.sequence.SequenceEvent;
-import com.korisnamedia.audio.sequence.SequencePlayer;
 import com.korisnamedia.musicbox.starling.ButtonBar;
 import com.korisnamedia.musicbox.starling.ButtonEvent;
 import com.korisnamedia.musicbox.starling.MixBoxUI;
-import com.korisnamedia.musicbox.ui.BoxOfTracks;
-import com.korisnamedia.musicbox.ui.TransportControls;
 import com.korisnamedia.musicbox.ui.TransportEvent;
-import com.korisnamedia.ui.CircleMeter;
 
 import flash.events.Event;
 
@@ -37,7 +30,6 @@ public class MultiTrackBox extends EventDispatcher{
 
     private var _mp3SampleLoader:MP3SampleLoader;
 
-    public var mixBoxUI:MixBoxUI;
     public var mixEngine:MixEngine;
     private var _samplesPerBeat:Number;
 
@@ -55,17 +47,12 @@ public class MultiTrackBox extends EventDispatcher{
 
     public static const MIC_TRACK_INDEX:int = 8;
 
-    public function MultiTrackBox(tempo:Tempo, ui:MixBoxUI) {
-
-        this.ui = ui;
+    public function MultiTrackBox(tempo:Tempo) {
 
         mixEngine = new MixEngine();
         mixEngine.tempo = tempo;
         mixEngine.addEventListener(MixEngine.PLAY_STATE, enginePlayStateChanged);
 
-        ui.init(mixEngine);
-        ui.addEventListener(IndexEvent.TYPE, toggleTrackHandler);
-        ui.addEventListener(ButtonEvent.TYPE, uiButtonClicked);
         _mp3SampleLoader = new MP3SampleLoader(tempo);
         _mp3SampleLoader.addEventListener(SampleEvent.READY, sampleLoaded);
         _mp3SampleLoader.addEventListener(Event.COMPLETE, allLoaded);
@@ -80,14 +67,20 @@ public class MultiTrackBox extends EventDispatcher{
         micTrack.addEventListener(Event.COMPLETE, recordingComplete);
     }
 
+    public function set mixBoxUI(mbUI:MixBoxUI):void {
+        log.debug("Set MixBoxUI : " + mbUI);
+        ui = mbUI;
+        ui.init(mixEngine);
+        ui.addEventListener(IndexEvent.TYPE, toggleTrackHandler);
+        ui.addEventListener(ButtonEvent.TYPE, uiButtonClicked);
+    }
+
     private function uiButtonClicked(event:ButtonEvent):void {
         if(event.button == ButtonBar.RECORD) {
             recordMic();
         } else if(event.button == ButtonBar.MUTE) {
             mixEngine.toggleMute();
-            if(mixEngine.muted) {
-                
-            }
+            ui.muted = mixEngine.muted;
         }
     }
 

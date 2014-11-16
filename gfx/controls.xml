@@ -3,22 +3,21 @@
 	<!-- Created with Adobe Flash Professional version 14.1.0.96 -->
 	<!-- http://www.adobe.com/products/flash.html -->
 	<SubTexture name="CancelButton0000" x="4" y="4" width="50" height="50" pivotX="0" pivotY="0"/>
-	<SubTexture name="MuteButton0000" x="58" y="4" width="50" height="50" pivotX="0" pivotY="0"/>
-	<SubTexture name="NewMic0000" x="112" y="4" width="50" height="50" pivotX="0" pivotY="0"/>
-	<SubTexture name="OkButton0000" x="166" y="4" width="50" height="50" pivotX="0" pivotY="0"/>
-	<SubTexture name="OldMic0000" x="4" y="58" width="50" height="50" pivotX="0" pivotY="0"/>
-	<SubTexture name="RecordButton0000" x="58" y="58" width="53" height="53" pivotX="1.5" pivotY="1.5"/>
-	<SubTexture name="RecordButton0001" x="115" y="58" width="53" height="53"/>
-	<SubTexture name="ResetButton0000" x="172" y="58" width="50" height="50" pivotX="0" pivotY="0"/>
-	<SubTexture name="ShareButton0000" x="4" y="115" width="50" height="50" pivotX="0" pivotY="0"/>
-	<SubTexture name="countdown0000" x="58" y="115" width="103" height="108" pivotX="2.75" pivotY="1" frameX="0" frameY="0" frameWidth="104" frameHeight="108"/>
-	<SubTexture name="countdown0001" x="4" y="227" width="102" height="108" frameX="-1" frameY="0" frameWidth="104" frameHeight="108"/>
-	<SubTexture name="countdown0002" x="110" y="227" width="102" height="108" frameX="-1" frameY="0" frameWidth="104" frameHeight="108"/>
-	<SubTexture name="countdown0003" x="4" y="339" width="103" height="108" frameX="0" frameY="0" frameWidth="104" frameHeight="108"/>
-	<SubTexture name="countdown0004" x="111" y="339" width="103" height="108" frameX="-1" frameY="0" frameWidth="104" frameHeight="108"/>
-	<SubTexture name="divider0000" x="4" y="451" width="102" height="2" pivotX="1" pivotY="1"/>
-	<SubTexture name="recordProgress0000" x="110" y="451" width="100" height="5" pivotX="0" pivotY="0"/>
-	<SubTexture name="transportControls0000" x="4" y="460" width="44" height="44" pivotX="-0.5" pivotY="-0.5" frameX="0" frameY="0" frameWidth="54" frameHeight="54"/>
-	<SubTexture name="transportControls0001" x="52" y="460" width="44" height="44" frameX="0" frameY="0" frameWidth="54" frameHeight="54"/>
-	<SubTexture name="transportControls0002" x="58" y="58" width="53" height="53"/>
+	<SubTexture name="Countdown0000" x="58" y="4" width="103" height="108" pivotX="2.75" pivotY="1" frameX="0" frameY="0" frameWidth="104" frameHeight="108"/>
+	<SubTexture name="Countdown0001" x="4" y="116" width="102" height="108" frameX="-1" frameY="0" frameWidth="104" frameHeight="108"/>
+	<SubTexture name="Countdown0002" x="110" y="116" width="102" height="108" frameX="-1" frameY="0" frameWidth="104" frameHeight="108"/>
+	<SubTexture name="Countdown0003" x="4" y="228" width="103" height="108" frameX="0" frameY="0" frameWidth="104" frameHeight="108"/>
+	<SubTexture name="Countdown0004" x="111" y="228" width="103" height="108" frameX="-1" frameY="0" frameWidth="104" frameHeight="108"/>
+	<SubTexture name="MuteButton0000" x="4" y="340" width="50" height="50" pivotX="0" pivotY="0"/>
+	<SubTexture name="MuteButton0001" x="58" y="340" width="50" height="50"/>
+	<SubTexture name="NewMic0000" x="112" y="340" width="50" height="50" pivotX="0" pivotY="0"/>
+	<SubTexture name="OkButton0000" x="166" y="340" width="50" height="50" pivotX="0" pivotY="0"/>
+	<SubTexture name="OldMic0000" x="4" y="394" width="50" height="50" pivotX="0" pivotY="0"/>
+	<SubTexture name="RecordButton0000" x="58" y="394" width="53" height="53" pivotX="1.5" pivotY="1.5"/>
+	<SubTexture name="RecordButton0001" x="115" y="394" width="53" height="53"/>
+	<SubTexture name="ResetButton0000" x="172" y="394" width="50" height="50" pivotX="0" pivotY="0"/>
+	<SubTexture name="ShareButton0000" x="4" y="451" width="50" height="50" pivotX="0" pivotY="0"/>
+	<SubTexture name="TransportControls0000" x="58" y="451" width="44" height="44" pivotX="-0.5" pivotY="-0.5" frameX="0" frameY="0" frameWidth="54" frameHeight="54"/>
+	<SubTexture name="TransportControls0001" x="106" y="451" width="44" height="44" frameX="0" frameY="0" frameWidth="54" frameHeight="54"/>
+	<SubTexture name="TransportControls0002" x="58" y="394" width="53" height="53"/>
 </TextureAtlas>

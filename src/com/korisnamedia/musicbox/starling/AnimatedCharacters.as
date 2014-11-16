@@ -82,7 +82,7 @@ public class AnimatedCharacters extends Sprite {
         var touches:Vector.<Touch> = event.getTouches(this,TouchPhase.ENDED);
         for (var i:int = 0; i < touches.length; i++) {
             var touch:Touch = touches[i];
-            var id:int = characters.indexOf(touch.target);
+            var id:int = characters.indexOf(touch.target as MovieClip);
             if(id > -1) {
                 dispatchEvent(new IndexEvent(id));
             }
