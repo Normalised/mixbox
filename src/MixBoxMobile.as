@@ -4,6 +4,9 @@
  * Time: 13:45
  */
 package {
+import com.korisnamedia.social.SocialMobile;
+import com.milkmangames.nativeextensions.GoViral;
+
 import flash.desktop.NativeApplication;
 import flash.display.Sprite;
 import flash.display.StageAlign;
@@ -27,7 +30,15 @@ public class MixBoxMobile extends Sprite {
 
     public function MixBoxMobile() {
 
+        GoViral.create();
+        if(GoViral.isSupported()) {
+
+        } else {
+            trace("Go Viral Not Supported");
+        }
+
         AppConfig.useNativeScreen = true;
+        AppConfig.socialProvider = new SocialMobile();
 
         NativeApplication.nativeApplication.addEventListener(InvokeEvent.INVOKE, invoked);
         LOGGER_FACTORY.setup = new SimpleTargetSetup(new TraceTarget());

@@ -5,11 +5,10 @@
  */
 package com.korisnamedia.musicbox.ui {
 import com.korisnamedia.audio.MixEngine;
-import com.korisnamedia.musicbox.MicTrack;
+import com.korisnamedia.musicbox.audio.MicTrack;
 
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.events.MouseEvent;
 
 import org.as3commons.logging.api.ILogger;
 
@@ -23,7 +22,7 @@ public class NativeUI {
     private var engineInfo:EngineInfo;
     private var bufferFillTimeLimit:Number;
     private var container:Sprite;
-    private var micTrack:MicTrack;
+    public var micTrack:MicTrack;
     private var _mixEngine:MixEngine;
 
     public function NativeUI(container:Sprite) {
@@ -46,8 +45,11 @@ public class NativeUI {
 //        loadButton.buttonMode = true;
 //        container.addChild(loadButton);
 
+        micTrack = new MicTrack(AppConfig.tempo, 4);
+
         engineInfo = new EngineInfo();
         container.addChild(engineInfo);
+        container.addChild(micTrack);
 
         bufferFillTimeLimit = (4096 * 1000) / 44100;
         trace("BFTL : " + bufferFillTimeLimit);
@@ -56,20 +58,15 @@ public class NativeUI {
         doLayout();
     }
 
-    private function doLayout():void {
+    public function doLayout():void {
 
         engineInfo.x = (container.stage.stageWidth / 2) - (engineInfo.width / 2);
         engineInfo.y = container.stage.stageHeight - 200;
 
         if(micTrack) {
             micTrack.x = 10;
-            micTrack.y = 180;
+            micTrack.y = engineInfo.y;
         }
-    }
-
-    public function addMicTrack(micTrack:MicTrack):void {
-        this.micTrack = micTrack;
-        container.addChild(micTrack);
     }
 
     public function set mixEngine(engine:MixEngine):void {

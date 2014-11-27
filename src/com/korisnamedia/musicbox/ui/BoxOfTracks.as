@@ -4,15 +4,11 @@
  * Time: 10:40 AM
  */
 package com.korisnamedia.musicbox.ui {
-import com.korisnamedia.IndexEvent;
 import com.korisnamedia.audio.AudioLoop;
 import com.korisnamedia.audio.MixEngine;
-import com.korisnamedia.ui.CircleMeter;
-import com.korisnamedia.ui.MiniButton;
 
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.events.MouseEvent;
 import flash.media.Sound;
 
 public class BoxOfTracks extends Sprite {
@@ -69,7 +65,7 @@ public class BoxOfTracks extends Sprite {
                     playMetronome();
                 }
                 var beatsToStartPoint:Number = (5 - p);
-                mixEngine.gain = (beatsToStartPoint / 6) + 0.33;
+//                mixEngine.gain = (beatsToStartPoint / 6) + 0.33;
                 countDown = beatsToStartPoint.toString();
             }
         }

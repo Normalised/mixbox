@@ -4,6 +4,9 @@
  * Time: 13:45
  */
 package {
+import com.korisnamedia.musicbox.audio.MixBox;
+import com.korisnamedia.social.SocialWeb;
+
 import flash.display.Sprite;
 import flash.display.StageAlign;
 import flash.display.StageScaleMode;
@@ -19,6 +22,7 @@ import starling.core.Starling;
 
 use namespace LOGGER_FACTORY;
 
+[SWF(width='1280', height='800', backgroundColor='#FFC600', frameRate='30')]
 public class MixBoxWeb extends Sprite {
 
     private var _starling:Starling;
@@ -26,6 +30,8 @@ public class MixBoxWeb extends Sprite {
     public function MixBoxWeb() {
 
         AppConfig.useNativeScreen = false;
+        AppConfig.socialProvider = new SocialWeb();
+
         LOGGER_FACTORY.setup = new SimpleTargetSetup(new TraceTarget());
 
         stage.scaleMode = StageScaleMode.NO_SCALE;

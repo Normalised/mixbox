@@ -23,7 +23,7 @@ public class ButtonBar extends Sprite {
 
     private var cancelRecordingButton:MovieClip;
     private var recordButton:MovieClip;
-    private var acceptRecordingButton:MovieClip;
+//    private var acceptRecordingButton:MovieClip;
 
     private var basicButtonContainer:DisplayObjectContainer;
     private var recordingButtonContainer:DisplayObjectContainer;
@@ -32,21 +32,25 @@ public class ButtonBar extends Sprite {
     public static const SHARE:String = "shareEvent";
     public static const RESET:String = "resetEvent";
     public static const CANCEL:String = "cancelEvent";
-    public static const ACCEPT:String = "acceptEvent";
+//    public static const ACCEPT:String = "acceptEvent";
     public static const RECORD:String = "recordEvent";
+    public static const PLAY:String = "playEvent";
 
     private var buttonEventMap:Object;
+    private const BUTTON_SPACING:Number = 64;
+//    private var playButton:MovieClip;
 
-    public function ButtonBar(controlsAtlas:TextureAtlas) {
+    public function ButtonBar() {
 
-        muteButton = new MovieClip(controlsAtlas.getTextures("MuteButton"));
-        shareButton = new MovieClip(controlsAtlas.getTextures("ShareButton"));
-        resetButton = new MovieClip(controlsAtlas.getTextures("ResetButton"));
+        var assets:MixBoxAssets = MixBoxAssets.getInstance();
+        muteButton = new MovieClip(assets.getTextures("MuteButton"));
+        shareButton = new MovieClip(assets.getTextures("ShareButton"));
+        resetButton = new MovieClip(assets.getTextures("ResetButton"));
+        recordButton = new MovieClip(assets.getTextures("RecordButton"));
+//        playButton = new MovieClip(controlsAtlas.getTextures("PlayButton"));
 
-        recordButton = new MovieClip(controlsAtlas.getTextures("RecordButton"));
-
-        acceptRecordingButton = new MovieClip(controlsAtlas.getTextures("OkButton"));
-        cancelRecordingButton = new MovieClip(controlsAtlas.getTextures("CancelButton"));
+//        acceptRecordingButton = new MovieClip(controlsAtlas.getTextures("OkButton"));
+        cancelRecordingButton = new MovieClip(assets.getTextures("CancelButton"));
 
         basicButtonContainer = new Sprite();
         recordingButtonContainer = new Sprite();
@@ -56,8 +60,16 @@ public class ButtonBar extends Sprite {
         basicButtonContainer.addChild(resetButton);
 
         recordingButtonContainer.addChild(recordButton);
-        recordingButtonContainer.addChild(acceptRecordingButton);
+//        recordingButtonContainer.addChild(acceptRecordingButton);
         recordingButtonContainer.addChild(cancelRecordingButton);
+//        recordingButtonContainer.addChild(playButton);
+
+//        playButton.visible = false;
+
+        basicButtonContainer.height = 48;
+        basicButtonContainer.scaleX = basicButtonContainer.scaleY;
+        recordingButtonContainer.height = 48;
+        recordingButtonContainer.scaleX = recordingButtonContainer.scaleY;
 
         addChild(basicButtonContainer);
         addChild(recordingButtonContainer);
@@ -69,19 +81,22 @@ public class ButtonBar extends Sprite {
         buttonEventMap[shareButton] = SHARE;
         buttonEventMap[resetButton] = RESET;
         buttonEventMap[recordButton] = RECORD;
-        buttonEventMap[acceptRecordingButton] = ACCEPT;
+//        buttonEventMap[acceptRecordingButton] = ACCEPT;
         buttonEventMap[cancelRecordingButton] = CANCEL;
+//        buttonEventMap[playButton] = PLAY;
 
         addEventListener(TouchEvent.TOUCH, buttonTouched);
     }
 
     public function doLayout(width:Number):void {
 
-        shareButton.y = 2;
-        resetButton.y = 5;
-        shareButton.x = recordButton.x = (width - shareButton.width) / 2;
-        muteButton.x = cancelRecordingButton.x = shareButton.x - 150;
-        resetButton.x = acceptRecordingButton.x = shareButton.x + 150;
+        shareButton.x = muteButton.width + BUTTON_SPACING;
+        resetButton.x = shareButton.x + shareButton.width + BUTTON_SPACING;
+        recordButton.x = cancelRecordingButton.width + BUTTON_SPACING;
+
+        recordingButtonContainer.y = basicButtonContainer.y = 4;
+        recordingButtonContainer.x = (width / 2) - (recordButton.x * recordingButtonContainer.scaleX);
+        basicButtonContainer.x = (width - basicButtonContainer.width) / 2;
     }
 
     private function buttonTouched(event:TouchEvent):void {
@@ -98,7 +113,12 @@ public class ButtonBar extends Sprite {
         recordingButtonContainer.visible = true;
         basicButtonContainer.visible = false;
         if(hasRecording) {
-
+            cancelRecordingButton.visible = true;
+//            recordButton.visible = false;
+//            playButton.visible = true;
+//            playButton.currentFrame = isPlaying ? 1 : 0;
+        } else {
+            cancelRecordingButton.visible = false;
         }
     }
 
@@ -109,6 +129,13 @@ public class ButtonBar extends Sprite {
 
     public function set muted(m:Boolean):void {
         muteButton.currentFrame = m ? 1 : 0;
+    }
+
+    public function recordComplete():void {
+//        recordButton.visible = false;
+        cancelRecordingButton.visible = true;
+        recordButton.currentFrame = 0;
+//        playButton.visible = true;
     }
 
     public function set recording(recording:Boolean):void {

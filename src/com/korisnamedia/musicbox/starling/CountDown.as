@@ -17,9 +17,9 @@ public class CountDown extends Sprite {
     private var countdown:MovieClip;
 
     private static const log:ILogger = getLogger(CountDown);
-    public function CountDown(atlas:TextureAtlas) {
+    public function CountDown() {
 
-        countdown = new MovieClip(atlas.getTextures("Countdown"), 5);
+        countdown = new MovieClip(MixBoxAssets.getInstance().getTextures("Countdown"));
         addChild(countdown);
     }
 

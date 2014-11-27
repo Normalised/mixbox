@@ -11,13 +11,9 @@
 	<SubTexture name="MuteButton0000" x="4" y="340" width="50" height="50" pivotX="0" pivotY="0"/>
 	<SubTexture name="MuteButton0001" x="58" y="340" width="50" height="50"/>
 	<SubTexture name="NewMic0000" x="112" y="340" width="50" height="50" pivotX="0" pivotY="0"/>
-	<SubTexture name="OkButton0000" x="166" y="340" width="50" height="50" pivotX="0" pivotY="0"/>
-	<SubTexture name="OldMic0000" x="4" y="394" width="50" height="50" pivotX="0" pivotY="0"/>
-	<SubTexture name="RecordButton0000" x="58" y="394" width="53" height="53" pivotX="1.5" pivotY="1.5"/>
-	<SubTexture name="RecordButton0001" x="115" y="394" width="53" height="53"/>
-	<SubTexture name="ResetButton0000" x="172" y="394" width="50" height="50" pivotX="0" pivotY="0"/>
-	<SubTexture name="ShareButton0000" x="4" y="451" width="50" height="50" pivotX="0" pivotY="0"/>
-	<SubTexture name="TransportControls0000" x="58" y="451" width="44" height="44" pivotX="-0.5" pivotY="-0.5" frameX="0" frameY="0" frameWidth="54" frameHeight="54"/>
-	<SubTexture name="TransportControls0001" x="106" y="451" width="44" height="44" frameX="0" frameY="0" frameWidth="54" frameHeight="54"/>
-	<SubTexture name="TransportControls0002" x="58" y="394" width="53" height="53"/>
+	<SubTexture name="OldMic0000" x="166" y="340" width="50" height="50" pivotX="0" pivotY="0"/>
+	<SubTexture name="RecordButton0000" x="4" y="394" width="52" height="52" pivotX="1" pivotY="1"/>
+	<SubTexture name="RecordButton0001" x="60" y="394" width="52" height="52"/>
+	<SubTexture name="ResetButton0000" x="116" y="394" width="50" height="50" pivotX="0" pivotY="0"/>
+	<SubTexture name="ShareButton0000" x="170" y="394" width="50" height="50" pivotX="0" pivotY="0"/>
 </TextureAtlas>

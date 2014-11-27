@@ -12,13 +12,13 @@
 
     <!-- A universally unique application identifier. Must be unique across all AIR applications.
          Using a reverse DNS-style name as the id is recommended. (Eg. com.example.ExampleApplication.) Required. -->
-    <id>MooMixBox</id>
+    <id>MixBox</id>
 
     <!-- Used as the filename for the application. Required. -->
-    <filename>MooMixBox</filename>
+    <filename>MixBox</filename>
 
     <!-- The name that is displayed in the AIR application installer. May have multiple values for each language. See samples or xsd schema file. Optional. -->
-    <name>MooMixBox</name>
+    <name>MixBox</name>
 
     <!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade.
          Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
@@ -90,7 +90,7 @@
         <!--<maxSize></maxSize>-->
 
         <!-- The aspect ratio of the app ("portrait" or "landscape" or "any"). Optional. Mobile only. Default is the natural orientation of the device -->
-        <!--<aspectRatio></aspectRatio>-->
+        <aspectRatio>any</aspectRatio>
 
         <!-- Whether the app will begin auto-orienting on launch. Optional. Mobile only. Default false -->
         <autoOrients>true</autoOrients>
@@ -99,7 +99,7 @@
         <fullScreen>true</fullScreen>
 
         <!-- The render mode for the app (either auto, cpu, gpu, or direct). Optional. Default auto -->
-        <!--<renderMode></renderMode>-->
+        <renderMode>direct</renderMode>
 
         <!-- Whether the default direct mode rendering context allocates storage for depth and stencil buffers.  Optional.  Default false. -->
         <!--<depthAndStencil></depthAndStencil>-->
@@ -196,22 +196,6 @@
             <!--<string>UIStatusBarStyleBlackOpaque</string>-->
             <!--<key>UIRequiresPersistentWiFi</key>-->
             <!--<string>YES</string>-->
-            <key>UIRequiredDeviceCapabilities</key>
-            <array>
-                <string>microphone</string>
-                <string>still-camera</string>
-            </array>
-            <key>FacebookAppID</key><string>538947589541117</string>
-            <key>FacebookDisplayName</key><string>MooMixBox</string>
-            <key>CFBundleURLTypes</key>
-            <array>
-            <dict>
-            <key>CFBundleURLSchemes</key>
-            <array>
-            <string>fb538947589541117</string>
-            </array>
-            </dict>
-            </array>
             ]]>
         </InfoAdditions>
 
@@ -236,23 +220,30 @@
     </iPhone>
 
     <!-- Android specific tags that get passed to AndroidManifest.xml file. -->
-    <!--<android>-->
-        <!--<manifestAdditions>-->
-            <!--<![CDATA[-->
-            <!--<manifest android:installLocation="auto">-->
-                <!--<uses-permission android:name="android.permission.INTERNET"/>-->
-                <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>-->
+    <android>
+        <manifestAdditions>
+            <![CDATA[
+            <manifest android:installLocation="auto">
+                <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="19" />
+                <uses-permission android:name="android.permission.INTERNET"/>
+                <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+                <uses-permission android:name="android.permission.RECORD_AUDIO"/>
                 <!--<uses-permission android:name="android.permission.READ_PHONE_STATE"/>-->
                 <!--<uses-permission android:name="android.permission.VIBRATE"/>-->
                 <!--<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>-->
                 <!--<uses-permission android:name="android.permission.DISABLE_KEYGUARD"/>-->
                 <!--<uses-permission android:name="android.permission.WAKE_LOCK"/>-->
                 <!--<uses-permission android:name="android.permission.CAMERA"/>-->
-                <!--<uses-permission android:name="android.permission.RECORD_AUDIO"/>-->
                 <!--<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>-->
                 <!--<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>-->
 
-                <!--<uses-feature android:required="true" android:name="android.hardware.touchscreen.multitouch"/>-->
+                <uses-feature android:required="true" android:name="android.hardware.touchscreen.multitouch"/>
+                <application>
+                    <activity android:name="com.facebook.LoginActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar" android:label="Login"/>
+                    <provider android:authorities="com.facebook.app.NativeAppCallContentProvider538947589541117" android:name="com.facebook.NativeAppCallContentProvider" />
+                    <meta-data android:name="air.com.moo.mooBeats" android:value="538947589541117"/>
+                </application>
+
                 <!--<application android:enabled="true">
                     <activity android:excludeFromRecents="false">
                         <intent-filter>
@@ -261,14 +252,14 @@
                         </intent-filter>
                     </activity>
                 </application>-->
-            <!--</manifest>-->
-            <!--]]>-->
-            <!--</manifestAdditions>-->
+            </manifest>
+            ]]>
+            </manifestAdditions>
 
         <!-- Color depth for the app (either "32bit" or "16bit"). Optional. Default 16bit before namespace 3.0, 32bit after -->
         <!--<colorDepth></colorDepth>-->
         <!-- Indicates if the app contains video or not. Necessary for ordering of video planes with graphics plane, especially in Jellybean - if you app does video this must be set to true - valid values are true or false -->
         <!-- <containsVideo></containsVideo> -->
-    <!--</android>-->
+    </android>
 
 </application>
